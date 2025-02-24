@@ -107,7 +107,7 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 					labelId="priority-label"
 					id="priority"
 					name="priority"
-					value={task.priority}
+					value={editedTask.priority}
 					label="Prioridad"
 					onChange={handleChange}
 				>
