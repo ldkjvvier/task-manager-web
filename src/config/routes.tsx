@@ -1,4 +1,5 @@
 import { Login as LoginPage } from '../pages/Login/login'
+import { User as UserPage } from '../pages/User/user'
 import { ProtectedRoute } from '../pages/ProtectedRoute'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
@@ -19,7 +20,7 @@ const UserRoutes = () => {
 				path="/"
 				element={
 					<ProtectedRoute redirectTo="/">
-						<p>PAGINAS DEL USUARIO POR IMPLEMENTAR</p>
+						<UserPage />
 					</ProtectedRoute>
 				}
 			/>
