@@ -1,4 +1,7 @@
-import { createContext, useState, useEffect } from 'react'
+// src/context/AuthProvider.tsx
+
+import React, { useState, useEffect } from 'react'
+import { AuthContext } from '../context/AuthContext'
 import { User, LoginData, AuthResponse } from '../models/user'
 import { Navigate } from 'react-router'
 
@@ -37,29 +40,18 @@ export const logoutService = async (): Promise<boolean> => {
 	})
 }
 
-interface AuthContextType {
-	isAuthenticated: boolean
-	user: User
-	error: string
-	saveUser: (userData: AuthResponse) => void
-	isLoading: boolean
-	logout: () => Promise<void>
-	signin: (credentials: LoginData) => Promise<void>
-}
-
 const defaultUser = {
 	id: '',
 	name: '',
 	email: '',
 } as User
 
-const AuthContext = createContext({} as AuthContextType)
-export const AuthProvider = ({
+const AuthProvider = ({
 	children,
 }: {
 	children: React.ReactNode
 }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false)
+	const [isAuthenticated, setIsAuthenticated] = useState(true)
 	const [user, setUser] = useState<User>(defaultUser)
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState('')
@@ -129,5 +121,4 @@ export const AuthProvider = ({
 	)
 }
 
-export { AuthContext }
 export default AuthProvider
