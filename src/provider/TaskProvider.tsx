@@ -2,8 +2,10 @@ import { useState, useEffect, ReactNode } from 'react'
 import { TaskContext } from '../context/TaskContext'
 import { Task } from '../models/task'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
 const fetchTasksFromAPI = async (): Promise<Task[]> => {
-	const res = await fetch('http://localhost:5000/api/task')
+	const res = await fetch(`${API_BASE_URL}/tasks`)
 	if (res.status !== 200) {
 		throw new Error('Error al cargar las tareas')
 	}
@@ -11,7 +13,7 @@ const fetchTasksFromAPI = async (): Promise<Task[]> => {
 }
 
 const createTaskInAPI = async (task: Task): Promise<Task> => {
-	const res = await fetch('/api/tasks', {
+	const res = await fetch(`${API_BASE_URL}/tasks`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(task),
@@ -24,17 +26,17 @@ const createTaskInAPI = async (task: Task): Promise<Task> => {
 }
 
 const removeTaskFromAPI = async (taskId: string): Promise<void> => {
-	const res = await fetch(`/api/tasks/${taskId}`, {
+	const res = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
 		method: 'DELETE',
 	})
-	if (res.status !== 200) {
+	if (res.status !== 204) {
 		throw new Error('Error al eliminar la tarea')
 	}
 }
 
 const updateTaskInAPI = async (task: Task): Promise<Task> => {
-	const res = await fetch(`/api/tasks/${task.id}`, {
-		method: 'PUT',
+	const res = await fetch(`${API_BASE_URL}/tasks/${task.id}`, {
+		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(task),
 	})

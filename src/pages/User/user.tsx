@@ -14,7 +14,7 @@ import { isTaskNearDueDate } from '../../helper/TaskNearDueDate'
 import { useTask } from '../../hooks/useTask'
 
 export const User = () => {
-	const { tasks, addTask, toggleTaskStatus, removeTask } = useTask()
+	const { tasks, addTask, removeTask, updateTask } = useTask()
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
 
@@ -43,7 +43,14 @@ export const User = () => {
 	}
 
 	const handleToggleTaskCompletion = (taskId: string) => {
-		toggleTaskStatus(taskId)
+		const taskToUpdate = tasks.find((task) => task.id === taskId)
+		if (taskToUpdate) {
+			updateTask({
+				...taskToUpdate,
+				status:
+					taskToUpdate.status === 'pending' ? 'completed' : 'pending',
+			})
+		}
 	}
 
 	const handleDeleteTask = (taskId: string) => {
