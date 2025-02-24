@@ -9,35 +9,14 @@ import {
 import { useEffect, useState } from 'react'
 import { TaskForm } from './components/taskForm'
 import TaskList from './components/taskList'
-import { v4 as uuidv4 } from 'uuid'
 import { CustomSnackbar } from './components/SnackBar'
 import { isTaskNearDueDate } from '../../helper/TaskNearDueDate'
+import { useTask } from '../../hooks/useTask'
+
 export const User = () => {
-	const [tasks, setTasks] = useState<Task[]>([])
+	const { tasks, addTask, toggleTaskStatus, removeTask } = useTask()
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
-
-	useEffect(() => {
-		const tasks: Task[] = [
-			{
-				id: '1',
-				title: 'Tarea 1',
-				description: 'Descripción de la tarea 1',
-				dueDate: new Date(),
-				status: 'pending',
-				priority: 'high',
-			},
-			{
-				id: '2',
-				title: 'Tarea 2',
-				description: 'Descripción de la tarea 2',
-				dueDate: new Date(),
-				status: 'completed',
-				priority: 'medium',
-			},
-		]
-		setTasks(tasks)
-	}, [])
 
 	useEffect(() => {
 		const nearDueTasks = tasks.filter((task) =>
@@ -51,33 +30,24 @@ export const User = () => {
 			)
 		}
 	}, [tasks])
-	const addTask = (newTask: Task) => {
+
+	const handleAddTask = (newTask: Task) => {
 		const taskWithId = {
 			...newTask,
-			id: uuidv4(),
+			id: '',
 			title: newTask.title.toUpperCase(),
 			description: newTask.description?.toUpperCase(),
 		}
 
-		setTasks([...tasks, taskWithId])
+		addTask(taskWithId)
 	}
 
-	const toggleTaskCompletion = (taskId: string) => {
-		setTasks(
-			tasks.map((task) =>
-				task.id === taskId
-					? {
-							...task,
-							status:
-								task.status === 'pending' ? 'completed' : 'pending',
-					  }
-					: task
-			)
-		)
+	const handleToggleTaskCompletion = (taskId: string) => {
+		toggleTaskStatus(taskId)
 	}
 
-	const deleteTask = (taskId: string) => {
-		setTasks(tasks.filter((task) => task.id !== taskId))
+	const handleDeleteTask = (taskId: string) => {
+		removeTask(taskId)
 	}
 
 	return (
@@ -97,11 +67,11 @@ export const User = () => {
 			</AppBar>
 			<Container maxWidth="md">
 				<Box my={4} textAlign={'start'}>
-					<TaskForm onAddTask={addTask} />
+					<TaskForm onAddTask={handleAddTask} />
 					<TaskList
 						tasks={tasks}
-						onToggleCompletion={toggleTaskCompletion}
-						onDeleteTask={deleteTask}
+						onToggleCompletion={handleToggleTaskCompletion}
+						onDeleteTask={handleDeleteTask}
 					/>
 				</Box>
 			</Container>
