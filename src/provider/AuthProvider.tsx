@@ -5,7 +5,6 @@ import { Navigate } from 'react-router'
 const loginService = async (
 	credentials: LoginData
 ): Promise<AuthResponse> => {
-	// Aquí simula el inicio de sesión con las credenciales
 	const res = await new Promise<AuthResponse>((resolve, reject) => {
 		setTimeout(() => {
 			if (
@@ -31,7 +30,6 @@ const loginService = async (
 }
 
 export const logoutService = async (): Promise<boolean> => {
-	// Lógica para cerrar sesión (e.g., llamada a la API para cerrar la sesión del backend)
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve(true)

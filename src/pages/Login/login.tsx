@@ -11,7 +11,6 @@ import { useAuth } from '../../hooks/useAuth'
 export const Login = () => {
 	const { register, handleSubmit } = useForm()
 	const { signin, error } = useAuth()
-
 	const onSubmit = handleSubmit((data) => {
 		const credentials = {
 			email: data.email as string,
@@ -24,9 +23,10 @@ export const Login = () => {
 		<Container
 			maxWidth="xs"
 			sx={{
-				display: 'grid',
-				placeItems: 'center',
-				height: '100dvh',
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				height: '100vh',
 			}}
 		>
 			<Box
@@ -36,16 +36,20 @@ export const Login = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					padding: 4,
-					color: 'var(--text-primary)',
-					backgroundColor: 'var(--background-secondary)',
+					color: 'black',
+					backgroundColor: 'white',
 					borderRadius: '8px',
+					boxShadow: 3,
 				}}
 			>
-				<Box>
-					<Typography component="h2" variant="h5">
-						Ingresa tu correo electrónico y contraseña para acceder.
-					</Typography>
-				</Box>
+				<Typography
+					component="h2"
+					variant="h5"
+					sx={{ marginBottom: 3 }}
+				>
+					Ingresa tu correo electrónico y contraseña para acceder.
+				</Typography>
+
 				<form
 					onSubmit={(e) => {
 						e.preventDefault()
@@ -53,9 +57,11 @@ export const Login = () => {
 							console.error('Error submitting form:', error)
 						})
 					}}
-					className="flex flex-col w-full text-left mt-8"
+					style={{ width: '100%' }}
 				>
-					<div className="flex flex-col gap-8">
+					<Box
+						sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+					>
 						<TextField
 							type="email"
 							id="email"
@@ -65,6 +71,7 @@ export const Login = () => {
 							})}
 							placeholder="example@gmail.com"
 							autoComplete="email"
+							fullWidth
 						/>
 
 						<TextField
@@ -74,30 +81,39 @@ export const Login = () => {
 								required: 'Contraseña es requerida',
 							})}
 							placeholder="Escribe tu contraseña"
-							type={'password'}
+							type="password"
 							autoComplete="current-password"
+							fullWidth
 						/>
-					</div>
+					</Box>
 
 					<Button
 						type="submit"
 						variant="contained"
-						size="medium"
+						size="large"
 						sx={{
-							marginTop: '4rem',
-							backgroundColor: 'white',
-							color: 'var(--color-primary)',
+							marginTop: 3,
+							backgroundColor: 'primary.main',
+							color: 'white',
 							'&:hover': {
-								backgroundColor: 'var(--color-secondary)',
+								backgroundColor: 'secondary.main',
 							},
 						}}
+						fullWidth
 					>
 						Iniciar Sesión
 					</Button>
 
-					<p className="text-red-500 mt-4 text-center">
-						{error || ''}
-					</p>
+					{error && (
+						<Typography
+							color="error"
+							variant="body2"
+							align="center"
+							sx={{ marginTop: 2 }}
+						>
+							{error}
+						</Typography>
+					)}
 				</form>
 			</Box>
 		</Container>
