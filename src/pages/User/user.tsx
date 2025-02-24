@@ -9,19 +9,18 @@ import {
 import { useState } from 'react'
 import { TaskForm } from './components/taskForm'
 import TaskList from './components/taskList'
-
+import { v4 as uuidv4 } from 'uuid'
 export const User = () => {
 	const [tasks, setTasks] = useState<Task[]>([])
+	console.log(tasks)
 
-	// Función para agregar tarea
 	const addTask = (newTask: Task) => {
 		setTasks([
 			...tasks,
-			{ ...newTask, id: Date.now().toString(), status: 'pending' },
+			{ ...newTask, id: uuidv4(), status: 'pending' },
 		])
 	}
 
-	// Función para cambiar el estado de la tarea
 	const toggleTaskCompletion = (taskId: string) => {
 		setTasks(
 			tasks.map((task) =>
@@ -36,7 +35,6 @@ export const User = () => {
 		)
 	}
 
-	// Función para eliminar tarea
 	const deleteTask = (taskId: string) => {
 		setTasks(tasks.filter((task) => task.id !== taskId))
 	}

@@ -3,9 +3,9 @@ import { TaskItem } from './taskItem'
 import { Task } from '@/models/task'
 
 interface TaskListProps {
-	tasks: Task[] // Acepta un array de tareas
-	onToggleCompletion: (taskId: string) => void // Función que recibe el ID de la tarea
-	onDeleteTask: (taskId: string) => void // Función que recibe el ID de la tarea
+	tasks: Task[]
+	onToggleCompletion: (taskId: string) => void
+	onDeleteTask: (taskId: string) => void
 }
 
 const TaskList: React.FC<TaskListProps> = ({
