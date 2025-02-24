@@ -14,7 +14,6 @@ import {
 import { DatePicker } from '@mui/x-date-pickers'
 import { Task } from '@/models/task'
 import dayjs, { Dayjs } from 'dayjs'
-
 interface TaskFormProps {
 	onAddTask: (task: Task) => void
 }
@@ -65,7 +64,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 			component="form"
 			onSubmit={handleSubmit}
 			noValidate
-			sx={{ mt: 1 }}
+			sx={{ mt: 1, display: 'flex', flexDirection: 'column' }}
 		>
 			<TextField
 				margin="normal"
@@ -95,7 +94,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 			<DatePicker
 				label="Fecha límite"
 				value={task.dueDate ? dayjs(task.dueDate) : null}
+				minDate={dayjs()}
 				onChange={handleDateChange}
+				sx={{
+					width: '50%',
+				}}
 			/>
 			<FormControl fullWidth margin="normal">
 				<InputLabel id="priority-label">Prioridad</InputLabel>
