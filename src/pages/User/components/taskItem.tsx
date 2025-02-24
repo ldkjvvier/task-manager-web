@@ -9,6 +9,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete'
 import dayjs from 'dayjs'
 import { Task } from '@/models/task'
+import { isTaskNearDueDate } from '../../../helper/TaskNearDueDate'
 
 interface TaskItemProps {
 	task: Task
@@ -77,6 +78,13 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 					</>
 				}
 			/>
+			{isTaskNearDueDate(task.dueDate) && (
+				<Chip
+					label="Cerca de vencer"
+					size="small"
+					style={{ marginLeft: 8 }}
+				/>
+			)}
 			<Chip
 				label={task.priority}
 				color={priorityColor[task.priority]}
