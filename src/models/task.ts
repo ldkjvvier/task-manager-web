@@ -2,7 +2,7 @@ export interface Task {
 	id: string
 	title: string
 	description?: string
-	dueDate: string // ISO (YYYY-MM-DD)
+	dueDate: Date | null
 	status: 'pending' | 'completed'
 	priority: 'high' | 'medium' | 'low'
 }
