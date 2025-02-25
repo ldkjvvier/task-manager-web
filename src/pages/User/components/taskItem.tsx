@@ -65,11 +65,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 				sx={{
 					flexDirection: 'column',
 					alignItems: 'flex-start',
-					border: '1px solid',
+					borderBottom: '1px solid',
 					borderColor: 'divider',
-					borderRadius: 0.5,
-					boxShadow: 0.5,
-					mb: 0.5,
 					py: 2,
 				}}
 			>
