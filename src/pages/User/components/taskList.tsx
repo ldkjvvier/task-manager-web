@@ -1,4 +1,4 @@
-import { List, Typography } from '@mui/material'
+import { List, Paper, Typography } from '@mui/material'
 import { TaskItem } from './taskItem'
 import { Task } from '@/models/task'
 
@@ -17,20 +17,22 @@ const TaskList: React.FC<TaskListProps> = ({
 }) => {
 	return (
 		<>
-			<Typography variant="h5" component="h2" gutterBottom>
+			<Typography variant="h5" component="h2" gutterBottom mt={2}>
 				Lista de Tareas
 			</Typography>
-			<List>
-				{tasks.map((task) => (
-					<TaskItem
-						key={task.id}
-						task={task}
-						onToggleCompletion={onToggleCompletion}
-						onDeleteTask={onDeleteTask}
-						onUpdateTask={onUpdateTask}
-					/>
-				))}
-			</List>
+			<Paper>
+				<List disablePadding>
+					{tasks.map((task) => (
+						<TaskItem
+							key={task.id}
+							task={task}
+							onToggleCompletion={onToggleCompletion}
+							onDeleteTask={onDeleteTask}
+							onUpdateTask={onUpdateTask}
+						/>
+					))}
+				</List>
+			</Paper>
 		</>
 	)
 }
