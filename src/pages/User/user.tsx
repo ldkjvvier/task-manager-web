@@ -53,6 +53,10 @@ export const User = () => {
 		}
 	}
 
+	const handleUpdateTask = (task: Task) => {
+		updateTask(task)
+	}
+
 	const handleDeleteTask = (taskId: string) => {
 		removeTask(taskId)
 	}
@@ -79,6 +83,7 @@ export const User = () => {
 						tasks={tasks}
 						onToggleCompletion={handleToggleTaskCompletion}
 						onDeleteTask={handleDeleteTask}
+						onUpdateTask={handleUpdateTask}
 					/>
 				</Box>
 			</Container>

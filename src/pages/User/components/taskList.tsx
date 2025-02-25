@@ -6,12 +6,14 @@ interface TaskListProps {
 	tasks: Task[]
 	onToggleCompletion: (taskId: string) => void
 	onDeleteTask: (taskId: string) => void
+	onUpdateTask: (task: Task) => void
 }
 
 const TaskList: React.FC<TaskListProps> = ({
 	tasks,
 	onToggleCompletion,
 	onDeleteTask,
+	onUpdateTask,
 }) => {
 	return (
 		<>
@@ -25,6 +27,7 @@ const TaskList: React.FC<TaskListProps> = ({
 						task={task}
 						onToggleCompletion={onToggleCompletion}
 						onDeleteTask={onDeleteTask}
+						onUpdateTask={onUpdateTask}
 					/>
 				))}
 			</List>
