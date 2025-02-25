@@ -7,18 +7,15 @@ import AuthProvider from './provider/AuthProvider.tsx'
 import { CssBaseline } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import TaskProvider from './provider/TaskProvider.tsx'
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<AuthProvider>
-			<TaskProvider>
-				<CustomTheme>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<CssBaseline />
-						<AppRoutes />
-					</LocalizationProvider>
-				</CustomTheme>
-			</TaskProvider>
+			<CustomTheme>
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+					<CssBaseline />
+					<AppRoutes />
+				</LocalizationProvider>
+			</CustomTheme>
 		</AuthProvider>
 	</StrictMode>
 )
