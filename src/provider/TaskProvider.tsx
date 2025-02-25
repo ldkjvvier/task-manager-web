@@ -56,9 +56,7 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const loadTasks = async () => {
 			try {
-				console.log(user)
 				const tasks = await fetchTasksFromAPI(user.id)
-				console.log('CARGANDO TAREAS:', tasks)
 				setTasks(tasks)
 			} catch (err) {
 				console.error('Error al cargar las tareas', err)
@@ -69,7 +67,6 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
 
 	const addTask = async (task: Task) => {
 		try {
-			console.log('CREANDO TASK', task)
 			const newTask = await createTaskInAPI(task)
 			setTasks((prevTasks) => [...prevTasks, newTask])
 		} catch (err) {
