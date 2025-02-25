@@ -2,7 +2,13 @@
 export interface User {
 	id: string
 	email: string
-	categories: string[]
+	categories: Category[]
+}
+
+export interface Category {
+	id: string
+	name: string
+	userId: string
 }
 
 export interface LoginData extends Omit<User, 'id' | 'categories'> {
