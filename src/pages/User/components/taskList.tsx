@@ -1,7 +1,7 @@
 import { List, Paper, Typography } from '@mui/material'
 import { TaskItem } from './taskItem'
-import { Task } from '@/models/task'
-import { Category, User } from '@/models/user'
+import { Task } from '../../../models/task'
+import { Category, User } from '../../../models/user'
 
 interface TaskListProps {
 	tasks: Task[]

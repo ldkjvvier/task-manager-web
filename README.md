@@ -1,50 +1,94 @@
-# React + TypeScript + Vite
+# Sistema de Gestión de Tareas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación web para gestionar tareas diarias, con funcionalidades como autenticación de usuarios, CRUD de tareas, categorización y notificaciones de tareas próximas a vencer.
 
-Currently, two official plugins are available:
+## Requisitos Previos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Asegúrate de tener las siguientes herramientas instaladas en tu máquina:
 
-## Expanding the ESLint configuration
+- **Node.js** (versión 14 o superior)
+- **MongoDB** (puede ser local o usar MongoDB Atlas)
+- **Visual Studio Code**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+### Abrir MongoDB Localmente
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. **Iniciar MongoDB Compass**  
+   Abre MongoDB Compass en tu máquina. Si no lo tienes instalado, puedes descargarlo desde [aquí](https://www.mongodb.com/products/compass).
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. **Crear una Nueva Conexión**  
+   Al abrir MongoDB Compass, selecciona la opción para crear una nueva conexión.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+3. **Configurar la Conexión**  
+   En el campo de **URL de conexión**, ingresa la siguiente URL para conectar a tu base de datos local: mongodb://localhost:27017
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+4. **Especificar el Nombre de la Base de Datos**  
+En el campo correspondiente, ingresa el nombre de la base de datos: task_management_test
+
+5. **Conectar y Verificar**  
+Haz clic en el botón **Conectar**. Si la conexión es exitosa, verás la base de datos listada en el panel izquierdo y podrás empezar a trabajar con ella.
+
+
+### Paso 1: Clonar el Repositorio FrontEnd
+
+1. **Clonar repositorio**
+   Clona el repositorio en tu máquina local utilizando el siguiente comando:
+   git clone https://github.com/ldkjvvier/task-manager-web.git
+
+2. **Navegar al directorio** 
+    Abre una consola en tu editor de codigo y pega: cd task-manager-web
+
+3. **Clonar repositorio**
+   Instala las dependencias necesarias para el FrontEnd (React + Vite) ejecutando:
+
+   npm install
+
+4. **Configurar el Archivo .env**
+
+   En el directorio frontend, crea un archivo .env (si no existe) y agrega la siguiente configuración:
+   VITE_API_URL=http://localhost:5000
+   Esto asegurará que tu aplicación FrontEnd se conecte al backend en el puerto 5000.
+
+6. **Iniciar el FrontEnd**  
+   Ya en directorio `FrontEnd` ejecuta el siguiente comando para iniciar el servidor: 
+   npm run dev
+
+### Paso 2: Clonar el Repositorio Backend
+
+1. **Clonar repositorio**
+   Clona el repositorio en tu máquina local utilizando el siguiente comando:
+   git clone https://github.com/ldkjvvier/task-manager-backend.git
+
+2. **Navegar al directorio** 
+    Abre una consola en tu editor de codigo y pega: cd task-manager-backend
+
+3. **Clonar repositorio**
+   Instala las dependencias necesarias para el Backend (Node.js + Express) ejecutando:
+
+   npm install
+
+4. **Configurar el Archivo .env**
+
+   En el directorio backend, crea un archivo .env (si no existe) y agrega la siguiente configuración:
+   PORT=5000
+   DB_CONNECTION_STRING=mongodb://localhost:27017/Javier_Madariaga
+   Esto asegurará que tu aplicación Backend se conecte correctamente a la base de datos
+
+6. **Iniciar el Backend**  
+   Ya en directorio `backend` ejecuta el siguiente comando para iniciar el servidor: 
+   npm run dev
+
+
+### Verificación
+
+1. **Verificar el Backend**  
+   Accede a `http://localhost:5000` desde tu navegador o con herramientas como Postman para verificar que el Backend esté funcionando.
+
+2. **Verificar el Frontend**  
+   Abre tu navegador y accede a `http://localhost:3000` para ver la aplicación en funcionamiento.
+
+3. **Probar las funcionalidades**  
+   - **Autenticación**: Regístrate, haz login y asegúrate de que las rutas protegidas solo son accesibles para usuarios autenticados.
+   - **CRUD de Tareas**: Crea, edita y elimina tareas. Verifica que se reflejen correctamente en la base de datos.
+   - **Categorización de Tareas**: Asegúrate de que las tareas se puedan asignar a categorías.
+   - **Notificaciones**: Verifica que las notificaciones de tareas próximas a vencer se muestren correctamente.
