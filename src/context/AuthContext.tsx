@@ -10,6 +10,7 @@ interface AuthContextType {
 	logout: () => Promise<void>
 	signin: (credentials: LoginData) => Promise<void>
 	signup: (credentials: RegisterData) => Promise<void>
+	createCategory: (category: string) => Promise<void>
 }
 
 const AuthContext = createContext({} as AuthContextType)

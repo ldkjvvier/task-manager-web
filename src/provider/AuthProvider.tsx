@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { User, LoginData, RegisterData } from '../models/user'
+import {
+	Category,
+	User,
+	LoginData,
+	RegisterData,
+} from '../models/user'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const loginService = async (
@@ -18,7 +23,7 @@ const loginService = async (
 			throw new Error('Credenciales incorrectas')
 		}
 		return response.json()
-	} catch (error: unknown) {
+	} catch {
 		throw new Error('Error en el inicio de sesión')
 	}
 }
@@ -39,12 +44,27 @@ const registerService = async (
 	return response.json()
 }
 
-export const logoutService = async (): Promise<boolean> => {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve(true)
-		}, 1000)
+const logoutService = async (): Promise<boolean> => {
+	const response = await fetch(`${API_BASE_URL}/logout`)
+	return response.status === 204
+}
+
+const createCategoryInAPI = async (
+	categoryName: Category['name'],
+	userId: User['id']
+): Promise<Category[]> => {
+	const res = await fetch(`${API_BASE_URL}/category`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			id: userId,
+			category: categoryName,
+		}),
 	})
+	if (res.status !== 201) {
+		throw new Error('Error al crear la categoría')
+	}
+	return res.json()
 }
 
 const defaultUser: User = {
@@ -126,6 +146,18 @@ const AuthProvider = ({
 		}
 	}
 
+	const createCategory = async (category: string) => {
+		try {
+			const newCategory = await createCategoryInAPI(category, user.id)
+			setUser((prevUser) => ({
+				...prevUser,
+				categories: newCategory,
+			}))
+		} catch (err) {
+			console.error('Error al crear la categoría', err)
+		}
+	}
+
 	useEffect(() => {
 		setIsLoading(false)
 	}, [])
@@ -141,6 +173,7 @@ const AuthProvider = ({
 				logout,
 				signin,
 				signup,
+				createCategory,
 			}}
 		>
 			{children}

@@ -148,7 +148,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
 							<Chip
 								icon={<Label />}
-								label={'CHANGE ME'}
+								label={
+									task.categoryId === 'none'
+										? 'Sin categoría'
+										: task.categoryId
+								}
 								size="small"
 								color="default"
 								variant="outlined"

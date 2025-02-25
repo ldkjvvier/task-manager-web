@@ -56,6 +56,7 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const loadTasks = async () => {
 			try {
+				console.log(user)
 				const tasks = await fetchTasksFromAPI(user.id)
 				console.log('CARGANDO TAREAS:', tasks)
 				setTasks(tasks)

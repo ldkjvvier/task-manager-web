@@ -8,7 +8,6 @@ export interface User {
 export interface Category {
 	id: string
 	name: string
-	userId: string
 }
 
 export interface LoginData extends Omit<User, 'id' | 'categories'> {

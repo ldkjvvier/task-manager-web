@@ -28,13 +28,8 @@ export const TaskPage = () => {
 	const { tasks, addTask, removeTask, updateTask } = useTask()
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
-	const { user } = useAuth()
+	const { user, createCategory } = useAuth()
 	const [currentCategory, setCurrentCategory] = useState('todas')
-	const [categories, setCategories] = useState([
-		'trabajo',
-		'personal',
-		'compras',
-	])
 	const [isAddingCategory, setIsAddingCategory] = useState(false)
 	const [newCategory, setNewCategory] = useState('')
 
@@ -81,16 +76,17 @@ export const TaskPage = () => {
 		removeTask(taskId)
 	}
 
-	const handleAddCategory = () => {
-		if (
-			newCategory.trim() &&
-			!categories.includes(newCategory.trim().toLowerCase())
-		) {
-			setCategories([...categories, newCategory.trim().toLowerCase()])
-			setNewCategory('')
+	const handleAddCategory = async () => {
+		if (newCategory.trim() === '') {
 			setIsAddingCategory(false)
+			return
 		}
+
+		createCategory(newCategory)
+		setIsAddingCategory(false)
+		setNewCategory('')
 	}
+
 	return (
 		<>
 			<CustomSnackbar
