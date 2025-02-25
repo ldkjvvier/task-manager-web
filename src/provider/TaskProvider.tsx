@@ -1,11 +1,15 @@
 import { useState, useEffect, ReactNode } from 'react'
 import { TaskContext } from '../context/TaskContext'
 import { Task } from '../models/task'
+import { User } from '../models/user'
+import { useAuth } from '../hooks/useAuth'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-const fetchTasksFromAPI = async (): Promise<Task[]> => {
-	const res = await fetch(`${API_BASE_URL}/tasks`)
+const fetchTasksFromAPI = async (
+	userId: User['id']
+): Promise<Task[]> => {
+	const res = await fetch(`${API_BASE_URL}/tasks/${userId}`)
 	if (res.status !== 200) {
 		throw new Error('Error al cargar las tareas')
 	}
@@ -48,10 +52,11 @@ const updateTaskInAPI = async (task: Task): Promise<Task> => {
 
 const TaskProvider = ({ children }: { children: ReactNode }) => {
 	const [tasks, setTasks] = useState<Task[]>([])
+	const { user } = useAuth()
 	useEffect(() => {
 		const loadTasks = async () => {
 			try {
-				const tasks = await fetchTasksFromAPI()
+				const tasks = await fetchTasksFromAPI(user.id)
 				console.log('CARGANDO TAREAS:', tasks)
 				setTasks(tasks)
 			} catch (err) {
@@ -63,6 +68,7 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
 
 	const addTask = async (task: Task) => {
 		try {
+			console.log('CREANDO TASK', task)
 			const newTask = await createTaskInAPI(task)
 			setTasks((prevTasks) => [...prevTasks, newTask])
 		} catch (err) {

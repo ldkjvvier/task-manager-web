@@ -12,13 +12,19 @@ import {
 	SelectChangeEvent,
 } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
-import { Task } from '@/models/task'
+import { Task } from '../../../models/task'
 import dayjs, { Dayjs } from 'dayjs'
+import { User } from '../../../models/user'
+
 interface TaskFormProps {
 	onAddTask: (task: Task) => void
+	user: User
 }
 
-export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
+export const TaskForm: React.FC<TaskFormProps> = ({
+	onAddTask,
+	user,
+}) => {
 	const [task, setTask] = useState<Task>({
 		id: '',
 		title: '',
@@ -26,6 +32,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 		dueDate: null,
 		status: 'pending',
 		priority: 'medium',
+		userId: user.id,
+		categoryId: null,
 	})
 
 	const handleChange = (
@@ -55,6 +63,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 				dueDate: null,
 				status: 'pending',
 				priority: 'medium',
+				userId: user.id,
+				categoryId: null,
 			})
 		}
 	}
@@ -100,6 +110,28 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 					width: '50%',
 				}}
 			/>
+			<FormControl fullWidth margin="normal">
+				<InputLabel id="category-label">Categoría</InputLabel>
+				<Select
+					labelId="category-label"
+					id="category"
+					name="categoryId"
+					value={task.categoryId || ''}
+					label="Categoría"
+					onChange={handleChange}
+				>
+					{user.categories.length === 0 && (
+						<MenuItem value="" disabled>
+							No hay categorías
+						</MenuItem>
+					)}
+					{user.categories.map((category) => (
+						<MenuItem key={category.id} value={category.id}>
+							{category.name}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
 			<FormControl fullWidth margin="normal">
 				<InputLabel id="priority-label">Prioridad</InputLabel>
 				<Select

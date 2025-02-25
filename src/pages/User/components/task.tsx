@@ -22,12 +22,13 @@ import { CustomSnackbar } from '../components/SnackBar'
 import { isTaskNearDueDate } from '../../../helper/TaskNearDueDate'
 import { useTask } from '../../../hooks/useTask'
 import { Add } from '@mui/icons-material'
+import { useAuth } from '../../../hooks/useAuth'
 
 export const TaskPage = () => {
 	const { tasks, addTask, removeTask, updateTask } = useTask()
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
-
+	const { user } = useAuth()
 	const [currentCategory, setCurrentCategory] = useState('todas')
 	const [categories, setCategories] = useState([
 		'trabajo',
@@ -108,7 +109,7 @@ export const TaskPage = () => {
 
 			<Container maxWidth="md">
 				<Box my={4} textAlign={'start'}>
-					<TaskForm onAddTask={handleAddTask} />
+					<TaskForm onAddTask={handleAddTask} user={user} />
 
 					<Box
 						sx={{
@@ -126,13 +127,10 @@ export const TaskPage = () => {
 							scrollButtons="auto"
 						>
 							<Tab label="Todas" value="todas" />
-							{categories.map((category) => (
+							{user.categories.map((category) => (
 								<Tab
-									key={category}
-									label={
-										category.charAt(0).toUpperCase() +
-										category.slice(1)
-									}
+									key={category.id}
+									label={category.name}
 									value={category}
 								/>
 							))}
