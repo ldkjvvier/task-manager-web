@@ -143,6 +143,7 @@ export const TaskPage = () => {
 					<TaskList
 						tasks={tasks}
 						category={user.categories}
+						user={user}
 						currentCategory={currentCategory}
 						onToggleCompletion={handleToggleTaskCompletion}
 						onDeleteTask={handleDeleteTask}

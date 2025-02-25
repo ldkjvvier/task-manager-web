@@ -1,11 +1,12 @@
 import { List, Paper, Typography } from '@mui/material'
 import { TaskItem } from './taskItem'
 import { Task } from '@/models/task'
-import { Category } from '@/models/user'
+import { Category, User } from '@/models/user'
 
 interface TaskListProps {
 	tasks: Task[]
 	category: Category[]
+	user: User
 	currentCategory: string
 	onToggleCompletion: (taskId: string) => void
 	onDeleteTask: (taskId: string) => void
@@ -15,6 +16,7 @@ interface TaskListProps {
 const TaskList: React.FC<TaskListProps> = ({
 	tasks,
 	category,
+	user,
 	currentCategory,
 	onToggleCompletion,
 	onDeleteTask,
@@ -33,6 +35,7 @@ const TaskList: React.FC<TaskListProps> = ({
 								<TaskItem
 									key={task.id}
 									task={task}
+									user={user}
 									category={category}
 									onToggleCompletion={onToggleCompletion}
 									onDeleteTask={onDeleteTask}
@@ -45,6 +48,7 @@ const TaskList: React.FC<TaskListProps> = ({
 								<TaskItem
 									key={task.id}
 									task={task}
+									user={user}
 									category={category}
 									onToggleCompletion={onToggleCompletion}
 									onDeleteTask={onDeleteTask}

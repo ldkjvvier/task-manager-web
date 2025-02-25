@@ -15,15 +15,18 @@ import {
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs, { Dayjs } from 'dayjs'
 import { Task } from '../../../models/task'
+import { User } from '../../../models/user'
 
 interface TaskEditFormProps {
 	task: Task
+	user: User
 	onSubmit: (task: Task) => void
 	onCancel: () => void
 }
 
 export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 	task,
+	user,
 	onSubmit,
 	onCancel,
 }) => {
@@ -34,6 +37,8 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 		dueDate: task.dueDate ? dayjs(task.dueDate) : null,
 		priority: task.priority,
 		status: task.status,
+		userId: task.userId,
+		categoryId: task.categoryId,
 	})
 
 	const handleChange = (
@@ -101,6 +106,28 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 				value={editedTask.dueDate}
 				onChange={handleDateChange}
 			/>
+			<FormControl fullWidth margin="normal">
+				<InputLabel id="category-label">Categoría</InputLabel>
+				<Select
+					labelId="category-label"
+					id="category"
+					name="categoryId"
+					value={editedTask.categoryId || ''}
+					label="Categoría"
+					onChange={handleChange}
+				>
+					{user.categories.length === 0 && (
+						<MenuItem value="" disabled>
+							No hay categorías
+						</MenuItem>
+					)}
+					{user.categories.map((category) => (
+						<MenuItem key={category.id} value={category.id}>
+							{category.name}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
 			<FormControl fullWidth margin="normal">
 				<InputLabel id="priority-label">Prioridad</InputLabel>
 				<Select
