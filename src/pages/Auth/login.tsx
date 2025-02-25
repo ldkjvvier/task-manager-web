@@ -7,14 +7,19 @@ import {
 	Typography,
 } from '@mui/material'
 import { useAuth } from '../../hooks/useAuth'
+import React from 'react'
 
-export const Login = () => {
+interface LoginProps {
+	children: React.ReactNode
+}
+
+export const Login: React.FC<LoginProps> = ({ children }) => {
 	const { register, handleSubmit } = useForm()
 	const { signin, error } = useAuth()
 	const onSubmit = handleSubmit((data) => {
 		const credentials = {
-			email: data.email as string,
-			password: data.password as string,
+			email: data.email,
+			password: data.password,
 		}
 		signin(credentials)
 	})
@@ -114,6 +119,8 @@ export const Login = () => {
 							{error}
 						</Typography>
 					)}
+
+					{children}
 				</form>
 			</Box>
 		</Container>
