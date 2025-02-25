@@ -1,4 +1,4 @@
-import { Login as LoginPage } from '../pages/Login/login'
+import { Auth as AuthPage } from '../pages/Auth/page'
 import { User as UserPage } from '../pages/User/user'
 import { ProtectedRoute } from '../pages/ProtectedRoute'
 import { BrowserRouter, Routes, Route } from 'react-router'
@@ -7,11 +7,11 @@ import { useAuth } from '../hooks/useAuth'
 const PublicRoutes = () => {
 	return (
 		<Routes>
-			{/* RUTAS PUBLICAS */}
-			<Route path="*" element={<LoginPage />} />
+			<Route path="*" element={<AuthPage />} />
 		</Routes>
 	)
 }
+
 const UserRoutes = () => {
 	return (
 		<Routes>
