@@ -12,10 +12,11 @@ import {
 } from '@mui/material'
 import { Delete, Edit, Label } from '@mui/icons-material'
 import dayjs from 'dayjs'
-import { Task } from '@/models/task'
+import { Task } from '../../../models/task'
 import { useState } from 'react'
 import { TaskEditForm } from './taskEditForm'
 import { isTaskNearDueDate } from '../../../helper/TaskNearDueDate'
+import { Category } from '../../../models/user'
 
 const truncateText = (text: string, maxLength: number) => {
 	if (text.length <= maxLength) return text
@@ -23,6 +24,7 @@ const truncateText = (text: string, maxLength: number) => {
 }
 interface TaskItemProps {
 	task: Task
+	category: Category[]
 	onToggleCompletion: (taskId: string) => void
 	onDeleteTask: (taskId: string) => void
 	onUpdateTask: (task: Task) => void
@@ -30,6 +32,7 @@ interface TaskItemProps {
 
 export const TaskItem: React.FC<TaskItemProps> = ({
 	task,
+	category,
 	onToggleCompletion,
 	onDeleteTask,
 	onUpdateTask,
@@ -149,9 +152,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 							<Chip
 								icon={<Label />}
 								label={
-									task.categoryId === 'none'
-										? 'Sin categoría'
-										: task.categoryId
+									category.find((cat) => cat.id === task.categoryId)
+										?.name || 'Sin categoría'
 								}
 								size="small"
 								color="default"

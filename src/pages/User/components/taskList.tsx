@@ -1,9 +1,12 @@
 import { List, Paper, Typography } from '@mui/material'
 import { TaskItem } from './taskItem'
 import { Task } from '@/models/task'
+import { Category } from '@/models/user'
 
 interface TaskListProps {
 	tasks: Task[]
+	category: Category[]
+	currentCategory: string
 	onToggleCompletion: (taskId: string) => void
 	onDeleteTask: (taskId: string) => void
 	onUpdateTask: (task: Task) => void
@@ -11,6 +14,8 @@ interface TaskListProps {
 
 const TaskList: React.FC<TaskListProps> = ({
 	tasks,
+	category,
+	currentCategory,
 	onToggleCompletion,
 	onDeleteTask,
 	onUpdateTask,
@@ -22,15 +27,32 @@ const TaskList: React.FC<TaskListProps> = ({
 			</Typography>
 			<Paper>
 				<List disablePadding>
-					{tasks.map((task) => (
-						<TaskItem
-							key={task.id}
-							task={task}
-							onToggleCompletion={onToggleCompletion}
-							onDeleteTask={onDeleteTask}
-							onUpdateTask={onUpdateTask}
-						/>
-					))}
+					{tasks.map((task) => {
+						if (currentCategory === 'default') {
+							return (
+								<TaskItem
+									key={task.id}
+									task={task}
+									category={category}
+									onToggleCompletion={onToggleCompletion}
+									onDeleteTask={onDeleteTask}
+									onUpdateTask={onUpdateTask}
+								/>
+							)
+						}
+						if (task.categoryId === currentCategory) {
+							return (
+								<TaskItem
+									key={task.id}
+									task={task}
+									category={category}
+									onToggleCompletion={onToggleCompletion}
+									onDeleteTask={onDeleteTask}
+									onUpdateTask={onUpdateTask}
+								/>
+							)
+						}
+					})}
 				</List>
 			</Paper>
 		</>

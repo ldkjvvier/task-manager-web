@@ -29,7 +29,7 @@ export const TaskPage = () => {
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
 	const { user, createCategory } = useAuth()
-	const [currentCategory, setCurrentCategory] = useState('todas')
+	const [currentCategory, setCurrentCategory] = useState('default')
 	const [isAddingCategory, setIsAddingCategory] = useState(false)
 	const [newCategory, setNewCategory] = useState('')
 
@@ -122,12 +122,12 @@ export const TaskPage = () => {
 							variant="scrollable"
 							scrollButtons="auto"
 						>
-							<Tab label="Todas" value="todas" />
+							<Tab label="Todas" value="default" />
 							{user.categories.map((category) => (
 								<Tab
 									key={category.id}
 									label={category.name}
-									value={category}
+									value={category.id}
 								/>
 							))}
 						</Tabs>
@@ -142,6 +142,8 @@ export const TaskPage = () => {
 
 					<TaskList
 						tasks={tasks}
+						category={user.categories}
+						currentCategory={currentCategory}
 						onToggleCompletion={handleToggleTaskCompletion}
 						onDeleteTask={handleDeleteTask}
 						onUpdateTask={handleUpdateTask}
