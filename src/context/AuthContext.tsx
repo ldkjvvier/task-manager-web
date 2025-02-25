@@ -1,14 +1,15 @@
 import { createContext } from 'react'
-import { User, LoginData, AuthResponse } from '../models/user'
+import { User, LoginData, RegisterData } from '../models/user'
 
 interface AuthContextType {
 	isAuthenticated: boolean
 	user: User
 	error: string
-	saveUser: (userData: AuthResponse) => void
+	saveUser: (userData: User) => void
 	isLoading: boolean
 	logout: () => Promise<void>
 	signin: (credentials: LoginData) => Promise<void>
+	signup: (credentials: RegisterData) => Promise<void>
 }
 
 const AuthContext = createContext({} as AuthContextType)

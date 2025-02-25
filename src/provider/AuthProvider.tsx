@@ -1,35 +1,42 @@
-// src/context/AuthProvider.tsx
-
 import React, { useState, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { User, LoginData, AuthResponse } from '../models/user'
-import { Navigate } from 'react-router'
+import { User, LoginData, RegisterData } from '../models/user'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const loginService = async (
 	credentials: LoginData
-): Promise<AuthResponse> => {
-	const res = await new Promise<AuthResponse>((resolve, reject) => {
-		setTimeout(() => {
-			if (
-				credentials.email === 'test1@test.com' &&
-				credentials.password === '123456'
-			) {
-				resolve({
-					statusCode: 200,
-					body: {
-						user: {
-							id: '1',
-							name: 'Test User',
-							email: 'test1@test.com',
-						},
-					},
-				})
-			} else {
-				reject(new Error('Credenciales incorrectas'))
-			}
-		}, 1000)
+): Promise<User> => {
+	try {
+		const response = await fetch(`${API_BASE_URL}/login`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(credentials),
+		})
+		if (response.status !== 200) {
+			throw new Error('Credenciales incorrectas')
+		}
+		return response.json()
+	} catch (error: unknown) {
+		throw new Error('Error en el inicio de sesión')
+	}
+}
+
+const registerService = async (
+	userData: RegisterData
+): Promise<User> => {
+	const response = await fetch(`${API_BASE_URL}/register`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(userData),
 	})
-	return res
+	if (response.status !== 201) {
+		throw new Error('Error al registrar el usuario')
+	}
+	return response.json()
 }
 
 export const logoutService = async (): Promise<boolean> => {
@@ -40,36 +47,34 @@ export const logoutService = async (): Promise<boolean> => {
 	})
 }
 
-const defaultUser = {
+const defaultUser: User = {
 	id: '',
-	name: '',
 	email: '',
-} as User
+	categories: [],
+}
 
 const AuthProvider = ({
 	children,
 }: {
 	children: React.ReactNode
 }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(true)
+	const [isAuthenticated, setIsAuthenticated] = useState(false)
 	const [user, setUser] = useState<User>(defaultUser)
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState('')
-
 	const unauthorized = () => {
 		setIsAuthenticated(false)
 		setUser(defaultUser)
 		setIsLoading(false)
-		return <Navigate to="/" />
 	}
 
-	const saveSessionInfo = (user: User) => {
+	const saveSessionInfo = (userData: User) => {
 		setIsAuthenticated(true)
-		setUser(user)
+		setUser(userData)
 	}
 
-	const saveUser = (userData: AuthResponse) => {
-		saveSessionInfo(userData.body.user)
+	const saveUser = (userData: User) => {
+		saveSessionInfo(userData)
 	}
 
 	const logout = async () => {
@@ -100,6 +105,27 @@ const AuthProvider = ({
 		}
 	}
 
+	const signup = async (userData: RegisterData) => {
+		setIsLoading(true)
+		setError('')
+
+		try {
+			const res = await registerService(userData)
+			if (res) {
+				saveUser(res)
+				setIsAuthenticated(true)
+			}
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				setError(error.message)
+			} else {
+				setError('Error al registrar el usuario')
+			}
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
 	useEffect(() => {
 		setIsLoading(false)
 	}, [])
@@ -114,6 +140,7 @@ const AuthProvider = ({
 				isLoading,
 				logout,
 				signin,
+				signup,
 			}}
 		>
 			{children}

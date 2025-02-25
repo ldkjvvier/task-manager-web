@@ -48,12 +48,11 @@ const updateTaskInAPI = async (task: Task): Promise<Task> => {
 
 const TaskProvider = ({ children }: { children: ReactNode }) => {
 	const [tasks, setTasks] = useState<Task[]>([])
-
 	useEffect(() => {
 		const loadTasks = async () => {
 			try {
 				const tasks = await fetchTasksFromAPI()
-				console.log(tasks)
+				console.log('CARGANDO TAREAS:', tasks)
 				setTasks(tasks)
 			} catch (err) {
 				console.error('Error al cargar las tareas', err)
