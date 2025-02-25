@@ -8,6 +8,12 @@ import {
 	Tabs,
 	Tab,
 	IconButton,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	TextField,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { TaskForm } from './components/taskForm'
@@ -73,6 +79,16 @@ export const User = () => {
 		removeTask(taskId)
 	}
 
+	const handleAddCategory = () => {
+		if (
+			newCategory.trim() &&
+			!categories.includes(newCategory.trim().toLowerCase())
+		) {
+			setCategories([...categories, newCategory.trim().toLowerCase()])
+			setNewCategory('')
+			setIsAddingCategory(false)
+		}
+	}
 	return (
 		<>
 			<CustomSnackbar
@@ -137,6 +153,29 @@ export const User = () => {
 					/>
 				</Box>
 			</Container>
+			<Dialog
+				open={isAddingCategory}
+				onClose={() => setIsAddingCategory(false)}
+			>
+				<DialogTitle>Agregar Nueva Categoría</DialogTitle>
+				<DialogContent>
+					<TextField
+						autoFocus
+						margin="dense"
+						label="Nombre de la categoría"
+						fullWidth
+						variant="outlined"
+						value={newCategory}
+						onChange={(e) => setNewCategory(e.target.value)}
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={() => setIsAddingCategory(false)}>
+						Cancelar
+					</Button>
+					<Button onClick={handleAddCategory}>Agregar</Button>
+				</DialogActions>
+			</Dialog>
 		</>
 	)
 }
