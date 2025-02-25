@@ -1,6 +1,5 @@
 import {
 	ListItem,
-	ListItemText,
 	Checkbox,
 	IconButton,
 	Chip,
@@ -9,13 +8,19 @@ import {
 	DialogContent,
 	DialogTitle,
 	Box,
+	Tooltip,
 } from '@mui/material'
-import { Delete, Edit } from '@mui/icons-material'
+import { Delete, Edit, Label } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import { Task } from '@/models/task'
 import { useState } from 'react'
 import { TaskEditForm } from './taskEditForm'
 import { isTaskNearDueDate } from '../../../helper/TaskNearDueDate'
+
+const truncateText = (text: string, maxLength: number) => {
+	if (text.length <= maxLength) return text
+	return text.slice(0, maxLength) + '...'
+}
 interface TaskItemProps {
 	task: Task
 	onToggleCompletion: (taskId: string) => void
@@ -30,6 +35,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 	onUpdateTask,
 }) => {
 	const [editDialogOpen, setEditDialogOpen] = useState(false)
+	const [showFullDescription, setShowFullDescription] =
+		useState(false)
 	const priorityColor: Record<
 		string,
 		'error' | 'warning' | 'success'
@@ -55,88 +62,153 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 	return (
 		<>
 			<ListItem
-				secondaryAction={
-					<>
-						<IconButton
-							edge="end"
-							aria-label="edit"
-							onClick={handleEditClick}
-							sx={{ mr: 1 }}
-						>
-							<Edit />
-						</IconButton>
-						<IconButton
-							edge="end"
-							aria-label="delete"
-							onClick={() => onDeleteTask(task.id)}
-						>
-							<Delete />
-						</IconButton>
-					</>
-				}
+				sx={{
+					flexDirection: 'column',
+					alignItems: 'flex-start',
+					border: '1px solid',
+					borderColor: 'divider',
+					borderRadius: 0.5,
+					boxShadow: 0.5,
+					mb: 0.5,
+					py: 2,
+				}}
 			>
-				<Checkbox
-					edge="start"
-					checked={task.status === 'completed'}
-					onChange={() => onToggleCompletion(task.id)}
-				/>
-				<ListItemText
-					primary={
+				<Box
+					sx={{
+						display: 'flex',
+						width: '100%',
+						alignItems: 'flex-start',
+					}}
+				>
+					<Checkbox
+						edge="start"
+						checked={task.status === 'completed'}
+						onChange={() => onToggleCompletion(task.id)}
+					/>
+					<Box
+						sx={{
+							flex: 1,
+							minWidth: 0,
+							mr: 2,
+						}}
+					>
 						<Typography
-							component="span"
-							style={{
+							variant="subtitle1"
+							component="div"
+							sx={{
 								textDecoration:
 									task.status === 'completed'
 										? 'line-through'
 										: 'none',
+								wordBreak: 'break-word',
 							}}
 						>
 							{task.title}
 						</Typography>
-					}
-					secondary={
-						<>
-							<Typography
-								component="span"
-								variant="body2"
-								color="text.primary"
+
+						{task.description && (
+							<Tooltip
+								title={
+									showFullDescription
+										? ''
+										: 'Click para ver descripción completa'
+								}
 							>
-								{task.description}
-							</Typography>
+								<Typography
+									variant="body2"
+									color="text.secondary"
+									sx={{
+										mt: 1,
+										wordBreak: 'break-word',
+										whiteSpace: 'pre-wrap',
+										cursor: 'pointer',
+									}}
+									onClick={() =>
+										setShowFullDescription(!showFullDescription)
+									}
+								>
+									{showFullDescription
+										? task.description
+										: truncateText(task.description, 150)}
+								</Typography>
+							</Tooltip>
+						)}
+
+						<Box
+							sx={{
+								mt: 1,
+								display: 'flex',
+								gap: 1,
+								flexWrap: 'wrap',
+							}}
+						>
 							{task.dueDate && (
-								<Typography component="span" variant="body2">
-									{' — '}Fecha límite:{' '}
+								<Typography variant="body2" color="text.secondary">
+									Fecha límite:{' '}
 									{dayjs(task.dueDate).format('DD/MM/YYYY')}
 								</Typography>
 							)}
-						</>
-					}
-				/>
-				<Box
-					sx={{
-						mr: 7,
-					}}
-				>
-					{isTaskNearDueDate(task.dueDate) && (
-						<Chip
-							label={
-								daysUntilDue === 0
-									? 'Vence hoy'
-									: `Vence en ${daysUntilDue} día${
-											daysUntilDue > 1 ? 's' : ''
-									  }`
-							}
-							color="warning"
+
+							<Chip
+								icon={<Label />}
+								label={'CHANGE ME'}
+								size="small"
+								color="default"
+								variant="outlined"
+							/>
+						</Box>
+					</Box>
+
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							flexShrink: 0,
+							gap: 1,
+						}}
+					>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'end',
+								gap: 1,
+							}}
+						>
+							{isTaskNearDueDate(task.dueDate) && (
+								<Chip
+									label={
+										daysUntilDue === 0
+											? 'Vence hoy'
+											: `Vence en ${daysUntilDue} día${
+													daysUntilDue > 1 ? 's' : ''
+											  }`
+									}
+									color="warning"
+									size="small"
+								/>
+							)}
+							<Chip
+								label={task.priority}
+								color={priorityColor[task.priority]}
+								size="small"
+							/>
+						</Box>
+						<IconButton
+							aria-label="edit"
+							onClick={handleEditClick}
 							size="small"
-							style={{ marginLeft: 8 }}
-						/>
-					)}
-					<Chip
-						label={task.priority}
-						color={priorityColor[task.priority]}
-						size="small"
-						style={{ marginLeft: 8 }}
-					/>
+						>
+							<Edit />
+						</IconButton>
+						<IconButton
+							aria-label="delete"
+							onClick={() => onDeleteTask(task.id)}
+							size="small"
+						>
+							<Delete />
+						</IconButton>
+					</Box>
 				</Box>
 			</ListItem>
 
