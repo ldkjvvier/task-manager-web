@@ -46,7 +46,7 @@ Haz clic en el botón **Conectar**. Si la conexión es exitosa, verás la base d
 4. **Configurar el Archivo .env**
 
    En el directorio frontend, crea un archivo .env (si no existe) y agrega la siguiente configuración:
-   VITE_API_URL=http://localhost:5000
+   VITE_API_BASE_URL=http://localhost:5000/api
    Esto asegurará que tu aplicación FrontEnd se conecte al backend en el puerto 5000.
 
 6. **Iniciar el FrontEnd**  
@@ -71,7 +71,7 @@ Haz clic en el botón **Conectar**. Si la conexión es exitosa, verás la base d
 
    En el directorio backend, crea un archivo .env (si no existe) y agrega la siguiente configuración:
    PORT=5000
-   DB_CONNECTION_STRING=mongodb://localhost:27017/Javier_Madariaga
+   DB_CONNECTION_STRING=mongodb://localhost:27017/task_management_test
    Esto asegurará que tu aplicación Backend se conecte correctamente a la base de datos
 
 6. **Iniciar el Backend**  
@@ -85,7 +85,7 @@ Haz clic en el botón **Conectar**. Si la conexión es exitosa, verás la base d
    Accede a `http://localhost:5000` desde tu navegador o con herramientas como Postman para verificar que el Backend esté funcionando.
 
 2. **Verificar el Frontend**  
-   Abre tu navegador y accede a `http://localhost:3000` para ver la aplicación en funcionamiento.
+   Abre tu navegador y accede a `http://localhost:5173` para ver la aplicación en funcionamiento.
 
 3. **Probar las funcionalidades**  
    - **Autenticación**: Regístrate, haz login y asegúrate de que las rutas protegidas solo son accesibles para usuarios autenticados.
